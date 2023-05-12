@@ -1,0 +1,10 @@
+*zip
+*html
+*.DS_Store
+
+# Cityscapes
+*gtFine
+*leftImg8bit
+cookies.txt
+license.txt
+README
