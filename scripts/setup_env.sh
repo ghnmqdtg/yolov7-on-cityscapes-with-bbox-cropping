@@ -1,5 +1,5 @@
-echo "Load miniconda3"
-module load miniconda3
+#!/bin/bash
+
 echo "Create Conda Env"
 conda create --name yolo_with_cropping python=3.10
 echo "Activate Conda Env"
@@ -12,6 +12,5 @@ pip install torch==1.13.1+cu117 torchvision==0.14.1+cu117 torchaudio==0.13.1 --e
 git clone https://github.com/WongKinYiu/yolov7.git
 echo "Install the required packages"
 pip install -r yolov7/requirements.txt
-pip install rebox
 pip install pycocotools
 pip install torchmetrics
