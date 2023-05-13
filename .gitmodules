@@ -1,3 +1,6 @@
 [submodule "yolov7"]
 	path = yolov7
 	url = https://github.com/ghnmqdtg/yolov7.git
+[submodule "cityscapes-to-coco-conversion"]
+	path = cityscapes-to-coco-conversion
+	url = https://github.com/TillBeemelmanns/cityscapes-to-coco-conversion.git
