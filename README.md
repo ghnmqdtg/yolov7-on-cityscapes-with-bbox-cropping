@@ -133,8 +133,8 @@ The model is trained with 100 epochs, and the mAP@50 is 0.61266, which is lower 
         <td width="50%" style="text-align:center;font-size:14px;"><b>mAP@50:95 : 0.38005)<b></td>
     </tr>
     <tr>
-        <td><img src="imgs/yolo_cityscapes_map50.svg"></img></td>
-        <td><img src="imgs/yolo_cityscapes_map50_95.svg"></img></td>
+        <td><img src="imgs/yolo_cityscapes_map50.png"></img></td>
+        <td><img src="imgs/yolo_cityscapes_map50_95.png"></img></td>
     </tr>
     <tr>
         <td colspan="3" width="33%" style="text-align:center;font-size:14px;"><b>Confusion Matrix<b></td>
