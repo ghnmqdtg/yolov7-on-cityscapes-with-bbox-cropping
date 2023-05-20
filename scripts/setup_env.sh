@@ -14,3 +14,7 @@ pip install -r cityscapes-to-coco-conversion/requirements.txt
 pip install wandb
 pip install pycocotools
 pip install torchmetrics
+
+echo "Install Diffusers"
+pip install accelerate
+pip install --upgrade diffusers
