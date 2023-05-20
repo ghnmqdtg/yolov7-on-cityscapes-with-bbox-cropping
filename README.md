@@ -166,7 +166,9 @@ We trained a YOLOv7 model on the Cityscapes dataset (convert to COCO format usin
     - `--sr`: Enable super resolution 4x.
     - `--sr-area-size`: The maximum area size of cropped region.
     - `--sr-step`: Control the effect of super-resolution, the larger, the better.
-
+    
+    <br>
+    
     <table align="center" border="0">
         <tr>
         <td colspan="4" style="text-align: center; font-size: 14px;"><b>Performance of Cropping & Super Resolution<b></td>
