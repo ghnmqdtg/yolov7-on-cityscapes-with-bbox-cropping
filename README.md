@@ -1,8 +1,9 @@
 # YOLOv7 on Cityscapes with bbox cropping
-## Introduction
-In this project, I trained YOLOv7 with the Cityscapes dataset and implemented the bbox cropping feature. It's an experimental idea to convert the segmentation annotations to bbox annotations with `cityscapes-to-coco-conversion` and then convert the COCO annotations to yolo annotations with my scripts and train the model with bbox annotations for object detection. The bbox cropping feature is implemented by modifying the `detect.py` file.
 
-The model is trained with 100 epochs, and the mAP@50 is 0.61266, which is lower than using the COCO dataset. I think the reason is that the Cityscapes dataset has many small objects since the camera is mounted on the car, and there always are objects far from the point of view.
+## Introduction
+In this project, we aimed to enhance the quality of the dashcam and monitor videos without costly upgrades. Using object detection and super-resolution techniques, we explored identifying and improving the visual details of cars or persons within low-quality frames.
+
+We trained a YOLOv7 model on the Cityscapes dataset (convert to COCO format using [`cityscapes-to-coco-conversion`](https://github.com/TillBeemelmanns/cityscapes-to-coco-conversion)) to detect objects of interest. Additionally, we incorporated [Latent Diffusion Models (LDM) for super-resolution](https://huggingface.co/CompVis/ldm-super-resolution-4x-openimages) to further enhance the cropped regions.
 
 ## Environment
 - Python 3.10.11
@@ -60,7 +61,7 @@ The model is trained with 100 epochs, and the mAP@50 is 0.61266, which is lower 
     ```
 
 
-## Train and evaluate the model
+## Train and evaluate the YOLOv7 model
 1. You should `cd` to `yolov7` folder first
     
     ```bash
@@ -68,7 +69,7 @@ The model is trained with 100 epochs, and the mAP@50 is 0.61266, which is lower 
     ```
 
 2. Train the model with cityscapes
-    
+
     ```bash
     $ python -m torch.distributed.launch \
         --nproc_per_node 1 \
@@ -86,7 +87,48 @@ The model is trained with 100 epochs, and the mAP@50 is 0.61266, which is lower 
         --hyp data/hyp.scratch.p5.yaml
     ```
 
-    The output will be in `runs/train`.
+    The output will be saved in `runs/train`.
+
+    <details>
+    <summary>Click to toggle contents of YOLOv7 Model Training Results</summary>
+
+    <table align="center" width="100%" border="0">
+        <tr>
+            <td colspan="2" style="text-align:center; font-size:14px;"><b>Training & Evaluation Report<b></td>
+        </tr>
+        <tr>
+            <td width="50%" style="text-align:center;font-size:14px;"><b>mAP@50: 0.61266<b></td>
+            <td width="50%" style="text-align:center;font-size:14px;"><b>mAP@50:95 : 0.38005)<b></td>
+        </tr>
+        <tr>
+            <td><img src="imgs/yolo_cityscapes_map50.png"></img></td>
+            <td><img src="imgs/yolo_cityscapes_map50_95.png"></img></td>
+        </tr>
+        <tr>
+            <td colspan="3" width="33%" style="text-align:center;font-size:14px;"><b>Confusion Matrix<b></td>
+        </tr>
+        <tr>
+            <td colspan="3"><img src="imgs/confusion_matrix.png"></img></td>
+        </tr>
+        <tr>
+            <td width="50%" style="text-align:center;font-size:14px;"><b>F1 curve<b></td>
+            <td width="50%" style="text-align:center;font-size:14px;"><b>PR curve<b></td>
+        </tr>
+        <tr>
+            <td><img src="imgs/F1_curve.png"></img></td>
+            <td><img src="imgs/PR_curve.png"></img></td>
+        </tr>
+        <tr>
+            <td width="50%" style="text-align:center;font-size:14px;"><b>P curve<b></td>
+            <td width="50%" style="text-align:center;font-size:14px;"><b>R curve<b></td>
+        </tr>
+        <tr>
+            <td><img src="imgs/P_curve.png"></img></td>
+            <td><img src="imgs/R_curve.png"></img></td>
+        </tr>
+    </table>
+    </details>
+
 
 3. Evaluation
     
@@ -102,60 +144,53 @@ The model is trained with 100 epochs, and the mAP@50 is 0.61266, which is lower 
         --name cityscapes_yolo_cityscapes
     ```
     
-    The output will be in `runs/test`.
+    The output will be saved in `runs/test`.
 
 ## Run inference
 
 - On single image
-    
+
+    Only save the cropped region of width or height greater than 32px. Because if the region is too small, it will lead super resolution to generate the obvious artifact. The output will be saved in `runs/detect`.
+
     ```bash
     $ python detect.py \
         --weights yolov7_cityscapes.pt \
         --conf 0.25 \
         --img-size 640 \
-        --source customdata/images/test/bonn/bonn_000004_000019_leftImg8bit.png
+        --source customdata/images/test/bonn/bonn_000004_000019_leftImg8bit.png \
+        --sr
+        --sr-area-size 22500
+        --sr-step 100
     ```
-    
-    The output will be in `runs/detect`.
+
+    - `--sr`: Enable super resolution 4x.
+    - `--sr-area-size`: The maximum area size of cropped region.
+    - `--sr-step`: Control the effect of super-resolution, the larger, the better.
+
+    <table align="center" border="0">
+        <tr>
+        <td colspan="4" style="text-align: center; font-size: 14px;"><b>Performance of Cropping & Super Resolution<b></td>
+        </tr>
+        <tr>
+        <td width="25%" style="text-align: center; font-size: 14px;"><b>Crop<b></td>
+        <td width="25%" style="text-align: center; font-size: 14px;"><b>Crop & SR 4x<b></td>
+        <td width="25%" style="text-align: center; font-size: 14px;"><b>Crop<b></td>
+        <td width="25%" style="text-align: center; font-size: 14px;"><b>Crop & SR 4x<b></td>
+        </tr>
+        <tr>
+        <td width="25%"><img width="180" height="180" src="imgs/sr/bonn_000004_000019_leftImg8bit_bicycle_1_org.jpg"></td>
+        <td width="25%"><img width="180" height="180" src="imgs/sr/bonn_000004_000019_leftImg8bit_bicycle_1_sr.jpg"></td>
+        <td width="25%"><img width="180" height="180" src="imgs/sr/bonn_000004_000019_leftImg8bit_car_8_org.jpg"></td>
+        <td width="25%"><img width="180" height="180" src="imgs/sr/bonn_000004_000019_leftImg8bit_car_8_sr.jpg"></td>
+        </tr>
+        <tr>
+        <td width="25%"><img width="180" height="180" src="imgs/sr/bonn_000004_000019_leftImg8bit_motorcycle_0_org.jpg"></td>
+        <td width="25%"><img width="180" height="180" src="imgs/sr/bonn_000004_000019_leftImg8bit_motorcycle_0_sr.jpg"></td>
+        <td width="25%"><img width="180" height="180" src="imgs/sr/bonn_000004_000019_leftImg8bit_car_10_org.jpg"></td>
+        <td width="25%"><img width="180" height="180" src="imgs/sr/bonn_000004_000019_leftImg8bit_car_10_sr.jpg"></td>
+        </tr>
+    </table>
 
 - On a video
 
     Nope, I haven't tried it yet.
-
-## Experimental Results
-
-<table align="center" width="100%" border="0">
-    <tr>
-        <td colspan="2" style="text-align:center; font-size:14px;"><b>Training & Evaluation Report<b></td>
-    </tr>
-    <tr>
-        <td width="50%" style="text-align:center;font-size:14px;"><b>mAP@50: 0.61266<b></td>
-        <td width="50%" style="text-align:center;font-size:14px;"><b>mAP@50:95 : 0.38005)<b></td>
-    </tr>
-    <tr>
-        <td><img src="imgs/yolo_cityscapes_map50.png"></img></td>
-        <td><img src="imgs/yolo_cityscapes_map50_95.png"></img></td>
-    </tr>
-    <tr>
-        <td colspan="3" width="33%" style="text-align:center;font-size:14px;"><b>Confusion Matrix<b></td>
-    </tr>
-    <tr>
-        <td colspan="3"><img src="imgs/confusion_matrix.png"></img></td>
-    </tr>
-    <tr>
-        <td width="50%" style="text-align:center;font-size:14px;"><b>F1 curve<b></td>
-        <td width="50%" style="text-align:center;font-size:14px;"><b>PR curve<b></td>
-    </tr>
-    <tr>
-        <td><img src="imgs/F1_curve.png"></img></td>
-        <td><img src="imgs/PR_curve.png"></img></td>
-    </tr>
-    <tr>
-        <td width="50%" style="text-align:center;font-size:14px;"><b>P curve<b></td>
-        <td width="50%" style="text-align:center;font-size:14px;"><b>R curve<b></td>
-    </tr>
-    <tr>
-        <td><img src="imgs/P_curve.png"></img></td>
-        <td><img src="imgs/R_curve.png"></img></td>
-    </tr>
-  </table>
