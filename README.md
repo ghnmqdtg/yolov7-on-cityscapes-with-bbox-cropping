@@ -192,6 +192,14 @@ We trained a YOLOv7 model on the Cityscapes dataset (convert to COCO format usin
         <td width="25%"><img width="180" height="180" src="imgs/sr/bonn_000004_000019_leftImg8bit_car_10_sr.jpg"></td>
         </tr>
     </table>
+    
+    If you want to test super resolution only, you can use `yolov7/utils/custom_features.py` to do super resolution. The default maximum area of cropped region is 22500 (150*150), and the default step is 100. You can change it in `yolov7/utils/custom_features.py`.
+
+    ```
+    $ python yolov7/utils/custom_features.py \
+        --input-img yolov7/inference/images/cropped_car.jpg \
+        --sr-step 100
+    ```
 
 - On a video
 
