@@ -159,12 +159,10 @@ We trained a YOLOv7 model on the Cityscapes dataset (convert to COCO format usin
         --img-size 640 \
         --source customdata/images/test/bonn/bonn_000004_000019_leftImg8bit.png \
         --sr
-        --sr-area-size 22500
         --sr-step 100
     ```
 
     - `--sr`: Enable super resolution 4x.
-    - `--sr-area-size`: The maximum area size of cropped region.
     - `--sr-step`: Control the effect of super-resolution, the larger, the better.
     
     <br>
@@ -193,11 +191,10 @@ We trained a YOLOv7 model on the Cityscapes dataset (convert to COCO format usin
         </tr>
     </table>
     
-    If you want to test super resolution only, you can use `yolov7/utils/custom_features.py` to do super resolution. The default maximum area of cropped region is 22500 (150*150), and the default step is 100. You can change it in `yolov7/utils/custom_features.py`.
-
+    If you want to test super resolution only, you can use `utils/custom_features.py` at `yolov7/` to do super resolution. If the width or height is larger than 150px, it will be resized to 150px and keep the aspect ratio first, then do super resolution.
     ```
-    $ python yolov7/utils/custom_features.py \
-        --input-img yolov7/inference/images/cropped_car.jpg \
+    $ python utils/custom_features.py \
+        --input-img inference/images/cropped_car.jpg \
         --sr-step 100
     ```
 
