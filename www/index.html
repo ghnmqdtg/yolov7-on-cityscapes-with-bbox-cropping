@@ -9,10 +9,11 @@
     <div class="flex gap-4 m-2 max-h-full">
         <div class="flex-1">
             <h1 class="text-2xl font-bold my-2">監視器畫面</h1>
-            <p class="my-2 p-4 bg-blue-200 rounded-lg drop-shadow-md">threshold: <input type="range" id="threshold-slider" class="align-middle mx-2" min="25" /><span id="threshold-indicator">0.7</span></p>
-
+            <p class="my-2 p-4 bg-blue-200 rounded-lg drop-shadow-md">threshold: <input type="range"
+                    id="threshold-slider" class="align-middle mx-2" min="25" /><span id="threshold-indicator">0.7</span>
+            </p>
             <div class="relative rounded-lg overflow-hidden drop-shadow-md" id="video-container">
-                <video src="./traffic-taipei-720.mp4" controls class="max-h-full"></video>
+                <video src="./street_view.mp4" controls class="max-h-full"></video>
                 <canvas class="w-full absolute top-0 left-0"></canvas>
             </div>
             <div class="my-2 p-4 bg-slate-700 rounded-lg drop-shadow-md text-white">
@@ -22,11 +23,18 @@
         </div>
         <div class="align-top w-1/2 flex-1 flex flex-col max-h-full">
             <h1 class="text-2xl font-bold my-2">放大畫面
-                <span class="py-2 text-base font-normal">這通常需要 6 秒</span></h1>
+                <span class="py-2 text-base font-normal">這通常需要 6 秒</span>
+            </h1>
             <div role="status" id="loading" class="hidden">
-                <svg aria-hidden="true" class="w-24 h-24 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
-                    <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+                <svg aria-hidden="true"
+                    class="w-24 h-24 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                    viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                        fill="currentColor" />
+                    <path
+                        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                        fill="currentFill" />
                 </svg>
                 <span class="sr-only">Loading...</span>
             </div>
@@ -38,7 +46,7 @@
     <canvas class="hidden"></canvas>
 
     <script>
-        const classMapping = ['person', 'car', 'truck', 'rider', 'motorcycle', 'bicycle', 'bus', 'train']
+        const classMapping = ['person', 'car', 'truck', 'rider', 'motorcycle', 'bicycle', 'bus', 'train'];
         const colorMapping = [
             [125, 53, 59],
             [217, 90, 0],
@@ -48,161 +56,161 @@
             [21, 121, 158],
             [0, 66, 128],
             [63, 49, 99]
-        ]
+        ];
 
         function getAbsolutePosition(elem) {
             let accuTop = 0,
-                accuLeft = 0
+                accuLeft = 0;
             while (elem != document.body) {
-                accuLeft += elem.offsetLeft
-                accuTop += elem.offsetTop
-                elem = elem.offsetParent
+                accuLeft += elem.offsetLeft;
+                accuTop += elem.offsetTop;
+                elem = elem.offsetParent;
             }
             return {
                 left: accuLeft,
                 top: accuTop
-            }
+            };
         }
     </script>
 
     <script>
-        const video = document.getElementsByTagName('video')[0]
-        const canvas = document.getElementsByTagName("canvas")[0]
-        const hidden_canvas = document.getElementsByTagName("canvas")[1]
-        const loading = document.getElementById('loading')
-        const enlarged = document.getElementById('enlarged')
-        const video_container = document.getElementById('video-container')
+        const video = document.getElementsByTagName('video')[0];
+        const canvas = document.getElementsByTagName("canvas")[0];
+        const hidden_canvas = document.getElementsByTagName("canvas")[1];
+        const loading = document.getElementById('loading');
+        const enlarged = document.getElementById('enlarged');
+        const video_container = document.getElementById('video-container');
         let ctx, hidden_ctx, currentBoundingBoxes = [],
-            threshold = 0.7
-        canvas.addEventListener('click', async(e) => {
+            threshold = 0.7;
+        canvas.addEventListener('click', async (e) => {
             const {
                 left: canvasLeft,
                 top: canvasTop
-            } = getAbsolutePosition(canvas)
-            const [videoX, videoY] = [(e.clientX - canvasLeft), (e.clientY - canvasTop)]
+            } = getAbsolutePosition(canvas);
+            const [videoX, videoY] = [(e.clientX - canvasLeft), (e.clientY - canvasTop)];
             const matches = currentBoundingBoxes.filter(boundingBox => {
-                let xyxy = boundingBox.xyxy
-                return xyxy[0] < videoX && xyxy[2] > videoX && xyxy[1] < videoY && xyxy[3] > videoY
-            })
+                let xyxy = boundingBox.xyxy;
+                return xyxy[0] < videoX && xyxy[2] > videoX && xyxy[1] < videoY && xyxy[3] > videoY;
+            });
             if (matches.length) {
-                loading.style.display = 'block'
-                enlarged.style.display = 'none'
-                enlarged.src = await superResolution(matches[0].xyxy)
-                loading.style.display = 'none'
-                enlarged.style.display = 'block'
+                loading.style.display = 'block';
+                enlarged.style.display = 'none';
+                enlarged.src = await superResolution(matches[0].xyxy);
+                loading.style.display = 'none';
+                enlarged.style.display = 'block';
             }
-        }, false)
+        }, false);
 
 
         canvas.addEventListener('mousemove', (e) => {
             const {
                 left: canvasLeft,
                 top: canvasTop
-            } = getAbsolutePosition(canvas)
-            const [videoX, videoY] = [(e.clientX - canvasLeft), (e.clientY - canvasTop)]
+            } = getAbsolutePosition(canvas);
+            const [videoX, videoY] = [(e.clientX - canvasLeft), (e.clientY - canvasTop)];
             const matches = currentBoundingBoxes.filter(boundingBox => {
-                let xyxy = boundingBox.xyxy
-                return xyxy[0] < videoX && xyxy[2] > videoX && xyxy[1] < videoY && xyxy[3] > videoY
-            })
+                let xyxy = boundingBox.xyxy;
+                return xyxy[0] < videoX && xyxy[2] > videoX && xyxy[1] < videoY && xyxy[3] > videoY;
+            });
             if (matches.length) {
-                drawBoundingBox(currentBoundingBoxes)
-                const [r, g, b] = colorMapping[matches[0].class]
-                ctx.fillStyle = `rgba(${r},${g},${b}, 0.5)`
+                drawBoundingBox(currentBoundingBoxes);
+                const [r, g, b] = colorMapping[matches[0].class];
+                ctx.fillStyle = `rgba(${r},${g},${b}, 0.5)`;
                 ctx.fillRect(matches[0].xyxy[0], matches[0].xyxy[1],
                     matches[0].xyxy[2] - matches[0].xyxy[0], matches[0].xyxy[3] - matches[0].xyxy[1]);
             }
-        })
+        });
 
-        video.addEventListener('canplay', async() => {
-            canvas.width = video.offsetWidth
-            canvas.height = video.offsetHeight - 65
-            ctx = canvas.getContext('2d')
-            hidden_ctx = hidden_canvas.getContext('2d')
-            drawBoundingBox(currentBoundingBoxes = await objectDetection())
-            if (video.paused) canvas.style.display = 'block'
-        }, false)
+        video.addEventListener('canplay', async () => {
+            canvas.width = video.offsetWidth;
+            canvas.height = video.offsetHeight - 65;
+            ctx = canvas.getContext('2d');
+            hidden_ctx = hidden_canvas.getContext('2d');
+            drawBoundingBox(currentBoundingBoxes = await objectDetection());
+            if (video.paused) canvas.style.display = 'block';
+        }, false);
 
-        video.addEventListener('loadeddata', async() => {
+        video.addEventListener('loadeddata', async () => {
             if (hidden_ctx != undefined) {
-                drawBoundingBox(currentBoundingBoxes = await objectDetection())
-                if (video.paused) canvas.style.display = 'block'
+                drawBoundingBox(currentBoundingBoxes = await objectDetection());
+                if (video.paused) canvas.style.display = 'block';
             }
-        })
+        });
 
-        video.addEventListener('pause', async() => {
-            drawBoundingBox(currentBoundingBoxes = await objectDetection())
-            if (video.paused) canvas.style.display = 'block'
-        }, false)
-        video.addEventListener('play', async() => {
-            canvas.style.display = 'none'
-        }, false)
+        video.addEventListener('pause', async () => {
+            drawBoundingBox(currentBoundingBoxes = await objectDetection());
+            if (video.paused) canvas.style.display = 'block';
+        }, false);
+        video.addEventListener('play', async () => {
+            canvas.style.display = 'none';
+        }, false);
 
         document.getElementById('label-info').innerHTML = classMapping.map((item, index) => {
-            const [r, g, b] = colorMapping[index]
-            return `<div><span style="color: rgb(${r},${g},${b})">■</span>${item}</div>`
-        }).join('')
+            const [r, g, b] = colorMapping[index];
+            return `<div><span style="color: rgb(${r},${g},${b})">■</span>${item}</div>`;
+        }).join('');
 
-        document.getElementById('threshold-slider').addEventListener('change', async(e) => {
-            threshold = e.target.value / 100
-            document.getElementById('threshold-indicator').innerHTML = threshold
-            drawBoundingBox(currentBoundingBoxes = await objectDetection())
-        }, false)
+        document.getElementById('threshold-slider').addEventListener('change', async (e) => {
+            threshold = e.target.value / 100;
+            document.getElementById('threshold-indicator').innerHTML = threshold;
+            drawBoundingBox(currentBoundingBoxes = await objectDetection());
+        }, false);
 
         async function videoToPNG(xyxy = []) {
             if (xyxy.length) {
-                xyxy = xyxy.map(item => item / video.offsetWidth * video.videoWidth)
-                ratio = Math.min(Math.sqrt(150 * 150 / ((xyxy[2] - xyxy[0]) * (xyxy[3] - xyxy[1]))), 1)
-                console.log('org size', Math.round((xyxy[2] - xyxy[0]) * ratio), Math.round((xyxy[3] - xyxy[1]) * ratio))
-                hidden_canvas.width = Math.round((xyxy[2] - xyxy[0]) * ratio)
-                hidden_canvas.height = Math.round((xyxy[3] - xyxy[1]) * ratio)
+                xyxy = xyxy.map(item => item / video.offsetWidth * video.videoWidth);
+                ratio = Math.min(Math.sqrt(150 * 150 / ((xyxy[2] - xyxy[0]) * (xyxy[3] - xyxy[1]))), 1);
+                console.log('org size', Math.round((xyxy[2] - xyxy[0]) * ratio), Math.round((xyxy[3] - xyxy[1]) * ratio));
+                hidden_canvas.width = Math.round((xyxy[2] - xyxy[0]) * ratio);
+                hidden_canvas.height = Math.round((xyxy[3] - xyxy[1]) * ratio);
                 hidden_ctx.drawImage(video, -xyxy[0] * ratio, -xyxy[1] * ratio,
-                    video.videoWidth * ratio, video.videoHeight * ratio)
+                    video.videoWidth * ratio, video.videoHeight * ratio);
             } else {
-                hidden_canvas.width = video.videoWidth
-                hidden_canvas.height = video.videoHeight - 65
-                hidden_ctx.drawImage(video, 0, 0)
+                hidden_canvas.width = video.videoWidth;
+                hidden_canvas.height = video.videoHeight - 65;
+                hidden_ctx.drawImage(video, 0, 0);
             }
-            return await new Promise(resolve => hidden_canvas.toBlob(resolve))
+            return await new Promise(resolve => hidden_canvas.toBlob(resolve));
         }
 
         async function objectDetection() {
-            let ratio = video.offsetWidth / video.videoWidth
+            let ratio = video.offsetWidth / video.videoWidth;
             const formData = new FormData();
             formData.append('file', await videoToPNG(), 'canvas.png');
 
             return await fetch('http://meow1.csie.ntu.edu.tw:30701/detect', {
-                    method: 'POST',
-                    body: formData
-                })
+                method: 'POST',
+                body: formData
+            })
                 .then(r => r.json()).then(data => {
                     if (data.length) data = data.filter(dt => dt.conf > threshold).map(dt => {
-                        console.log(dt)
-                        dt.xyxy = dt.xyxy.map(item => item * ratio)
-                        return dt
-                    })
-                    return data
-                })
+                        console.log(dt);
+                        dt.xyxy = dt.xyxy.map(item => item * ratio);
+                        return dt;
+                    });
+                    return data;
+                });
         }
 
         async function superResolution(xyxy) {
             const formData = new FormData();
 
-            const img = await videoToPNG(xyxy)
+            const img = await videoToPNG(xyxy);
             formData.append('file', img, 'canvas.png');
 
             return URL.createObjectURL(await fetch('http://meow1.csie.ntu.edu.tw:30701/enlarge', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(r => r.blob()))
+                method: 'POST',
+                body: formData
+            })
+                .then(r => r.blob()));
         }
 
         function drawBoundingBox(boundingBoxes) {
             // if (!video.paused) return
-            ctx.clearRect(0, 0, canvas.width, canvas.height)
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             for (let boundingBox of boundingBoxes) {
-                const [r, g, b] = colorMapping[boundingBox.class]
-                ctx.strokeStyle = `rgb(${r},${g},${b})`
+                const [r, g, b] = colorMapping[boundingBox.class];
+                ctx.strokeStyle = `rgb(${r},${g},${b})`;
                 ctx.lineWidth = 2;
 
                 let [x1, y1, x2, y2] = boundingBox.xyxy;
@@ -211,7 +219,7 @@
                 ctx.stroke();
 
                 ctx.font = '14px Arial';
-                ctx.fillStyle = `rgb(${r},${g},${b})`
+                ctx.fillStyle = `rgb(${r},${g},${b})`;
                 ctx.fillText(`class: ${classMapping[boundingBox.class]}, conf: ${boundingBox.conf.toFixed(2)}`, x1, y1 - 5);
             }
         }
